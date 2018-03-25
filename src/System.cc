@@ -57,6 +57,7 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
        exit(-1);
     }
 
+    float resolution = fsSettings["PointCloudMapping.Resolution"];
 
     //Load ORB Vocabulary
     cout << endl << "Loading ORB Vocabulary. This could take a while..." << endl;
@@ -83,8 +84,12 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
 
     //Initialize the Tracking thread
     //(it will live in the main thread of execution, the one that called this constructor)
+    //mpTracker = new Tracking(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
+    //                         mpMap, mpKeyFrameDatabase, strSettingsFile, mSensor);
+
+    mpPointCloudMapping = make_shared<PointCloudMapping>(resolution);
     mpTracker = new Tracking(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
-                             mpMap, mpKeyFrameDatabase, strSettingsFile, mSensor);
+                             mpMap, mpPointCloudMapping, mpKeyFrameDatabase, strSettingsFile, mSensor);
 
     //Initialize the Local Mapping thread and launch
     mpLocalMapper = new LocalMapping(mpMap, mSensor==MONOCULAR);
@@ -119,7 +124,7 @@ cv::Mat System::TrackStereo(const cv::Mat &imLeft, const cv::Mat &imRight, const
     {
         cerr << "ERROR: you called TrackStereo but input sensor was not set to STEREO." << endl;
         exit(-1);
-    }   
+    }
 
     // Check mode change
     {
@@ -170,7 +175,7 @@ cv::Mat System::TrackRGBD(const cv::Mat &im, const cv::Mat &depthmap, const doub
     {
         cerr << "ERROR: you called TrackRGBD but input sensor was not set to RGBD." << endl;
         exit(-1);
-    }    
+    }
 
     // Check mode change
     {
@@ -317,6 +322,8 @@ void System::Shutdown()
 
     if(mpViewer)
         pangolin::BindToContext("ORB-SLAM2: Map Viewer");
+
+    mpPointCloudMapping->shutdown();
 }
 
 void System::SaveTrajectoryTUM(const string &filename)

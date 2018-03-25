@@ -37,6 +37,7 @@
 #include "Initializer.h"
 #include "MapDrawer.h"
 #include "System.h"
+#include "pointCloudMapping.h"
 
 #include <mutex>
 
@@ -49,11 +50,16 @@ class Map;
 class LocalMapping;
 class LoopClosing;
 class System;
+class PointCloudMapping;
 
 class Tracking
-{  
+{
 
 public:
+    // 构造函数中初始化pointCloudMapping指针，该指针为智能指针
+    Tracking(System* pSys, ORBVocabulary* pVoc, FrameDrawer* pFrameDrawer, MapDrawer* pMapDrawer, Map* pMap,
+         shared_ptr<PointCloudMapping> pPointCloud, KeyFrameDatabase* pKFDB, const string &strSettingPath, const int sensor);
+
     Tracking(System* pSys, ORBVocabulary* pVoc, FrameDrawer* pFrameDrawer, MapDrawer* pMapDrawer, Map* pMap,
              KeyFrameDatabase* pKFDB, const string &strSettingPath, const int sensor);
 
@@ -95,6 +101,8 @@ public:
     // Current Frame
     Frame mCurrentFrame;
     cv::Mat mImGray;
+    cv::Mat mImRGB;
+    cv::Mat mImDepth;
 
     // Initialization Variables (Monocular)
     std::vector<int> mvIniLastMatches;
@@ -169,10 +177,10 @@ protected:
     KeyFrame* mpReferenceKF;
     std::vector<KeyFrame*> mvpLocalKeyFrames;
     std::vector<MapPoint*> mvpLocalMapPoints;
-    
+
     // System
     System* mpSystem;
-    
+
     //Drawers
     Viewer* mpViewer;
     FrameDrawer* mpFrameDrawer;
@@ -214,6 +222,7 @@ protected:
     bool mbRGB;
 
     list<MapPoint*> mlpTemporalPoints;
+    shared_ptr<PointCloudMapping> mpPointCloudMapping;
 };
 
 } //namespace ORB_SLAM
