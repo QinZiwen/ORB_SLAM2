@@ -68,6 +68,8 @@ void PointCloudMapping::insertKeyFrame(KeyFrame* kf, cv::Mat& color, cv::Mat& de
 
 pcl::PointCloud< PointCloudMapping::PointT >::Ptr PointCloudMapping::generatePointCloud(KeyFrame* kf, cv::Mat& color, cv::Mat& depth)
 {
+    std::cout << "color rows = " << color.rows << ", cols = " << color.cols << std::endl;
+    std::cout << "depth rows = " << depth.rows << ", cols = " << depth.cols << std::endl;
     PointCloud::Ptr tmp( new PointCloud() );
     // point cloud is null ptr
     for ( int m=0; m<depth.rows; m+=3 )

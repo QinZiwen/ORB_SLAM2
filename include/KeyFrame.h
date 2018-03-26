@@ -44,6 +44,7 @@ class KeyFrame
 {
 public:
     KeyFrame(Frame &F, Map* pMap, KeyFrameDatabase* pKFDB);
+    KeyFrame(Frame &F, Map* pMap, KeyFrameDatabase* pKFDB, cv::Mat& color, cv::Mat& depth);
 
     // Pose functions
     void SetPose(const cv::Mat &Tcw);
@@ -188,6 +189,9 @@ public:
     const int mnMaxY;
     const cv::Mat mK;
 
+    // the RGB and depth of key frame
+    cv::Mat mImRGB;
+    cv::Mat mImDepth;
 
     // The following variables need to be accessed trough a mutex to be thread safe.
 protected:
@@ -222,7 +226,7 @@ protected:
     // Bad flags
     bool mbNotErase;
     bool mbToBeErased;
-    bool mbBad;    
+    bool mbBad;
 
     float mHalfBaseline; // Only for visualization
 

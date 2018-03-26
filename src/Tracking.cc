@@ -1177,7 +1177,8 @@ void Tracking::CreateNewKeyFrame()
     if(!mpLocalMapper->SetNotStop(true))
         return;
 
-    KeyFrame* pKF = new KeyFrame(mCurrentFrame,mpMap,mpKeyFrameDB);
+    //KeyFrame* pKF = new KeyFrame(mCurrentFrame,mpMap,mpKeyFrameDB);
+    KeyFrame* pKF = new KeyFrame(mCurrentFrame,mpMap,mpKeyFrameDB,this->mImRGB, this->mImDepth);
 
     mpReferenceKF = pKF;
     mCurrentFrame.mpReferenceKF = pKF;
@@ -1250,9 +1251,6 @@ void Tracking::CreateNewKeyFrame()
 
     mnLastKeyFrameId = mCurrentFrame.mnId;
     mpLastKeyFrame = pKF;
-
-    //插入当前帧的rgb图像和深度图像，为生成稠密点云准备
-    mpPointCloudMapping->insertKeyFrame( pKF, this->mImRGB, this->mImDepth );
 }
 
 void Tracking::SearchLocalPoints()

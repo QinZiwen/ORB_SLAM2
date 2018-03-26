@@ -26,6 +26,7 @@
 #include "LoopClosing.h"
 #include "Tracking.h"
 #include "KeyFrameDatabase.h"
+#include "pointCloudMapping.h"
 
 #include <mutex>
 
@@ -36,11 +37,13 @@ namespace ORB_SLAM2
 class Tracking;
 class LoopClosing;
 class Map;
+class PointCloudMapping;
 
 class LocalMapping
 {
 public:
     LocalMapping(Map* pMap, const float bMonocular);
+    LocalMapping(Map* pMap, const float bMonocular, shared_ptr<PointCloudMapping> pPointCloud);
 
     void SetLoopCloser(LoopClosing* pLoopCloser);
 
@@ -71,6 +74,8 @@ public:
         unique_lock<std::mutex> lock(mMutexNewKFs);
         return mlNewKeyFrames.size();
     }
+
+    shared_ptr<PointCloudMapping> mpPointCloudMapping;
 
 protected:
 
