@@ -7,7 +7,7 @@ I use simple method for showing dense pointcloud of orb_slam2 keyframe, so I rep
 3. pcl-1.7
 4. Eigen3
 
-# How to use
+# Building
 ```
 $ git clone https://github.com/QinZiwen/ORB_SLAM2.git
 $ cd ORB_SLAM2
