@@ -1,9 +1,3 @@
-#########################################################################
-# File Name: run_RGBDtum.sh
-# Author: QinZiwen
-# mail: qinziwen2013@163.com
-# Created Time: 2017年06月07日 星期三 16时50分00秒
-#########################################################################
 #!/bin/bash
 
 # ./Examples/RGB-D/rgbd_tum Vocabulary/ORBvoc.txt Examples/RGB-D/TUM1.yaml /home/turtlebot/Database/TUM/rgbd_dataset_freiburg1_360/ /home/turtlebot/Database/TUM/rgbd_dataset_freiburg1_360/associated.txt
